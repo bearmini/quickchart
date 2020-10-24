@@ -3,6 +3,7 @@ package quickchart
 import (
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -141,5 +142,8 @@ func GenerateShortURL(chart *Chart) (string, error) {
 		return "", err
 	}
 
+	if !resp.Success {
+		return "", errors.New(string(respBody))
+	}
 	return resp.URL, nil
 }
