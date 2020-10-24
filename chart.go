@@ -68,19 +68,15 @@ func (c *Chart) Encode() (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	if c.encoding != nil && *c.encoding == "base64" {
 		return base64.StdEncoding.EncodeToString(b), nil
 	}
-	return url.QueryEscape(string(b)), nil
+
+	// returns plain json. URL Encoding will be done when generating URL
+	return string(b), nil
 }
 
 func (c *Chart) GetURL() (string, error) {
-	encodedChart, err := c.Encode()
-	if err != nil {
-		return "", err
-	}
-
 	q := url.Values{}
 	if c.width != nil {
 		q.Add("w", fmt.Sprintf("%d", *c.width))
@@ -100,6 +96,15 @@ func (c *Chart) GetURL() (string, error) {
 	if c.encoding != nil {
 		q.Add("encoding", *c.encoding)
 	}
+	if c.version != nil {
+		q.Add("version", *c.version)
+	}
 
-	return fmt.Sprintf("https://quickchart.io/chart?c=%s", encodedChart), nil
+	encodedChart, err := c.Encode()
+	if err != nil {
+		return "", err
+	}
+	q.Add("c", encodedChart)
+
+	return fmt.Sprintf("https://quickchart.io/chart?%s", q.Encode()), nil
 }
