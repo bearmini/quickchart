@@ -18,14 +18,14 @@ func TestEncode(t *testing.T) {
 				Data: ChartData{
 					Labels: []Label{"Hello world", "Test"},
 					Datasets: []Dataset{
-						{
+						LineChartDataset{
 							Label: String("Foo"),
 							Data:  []Data{1, 2},
 						},
 					},
 				},
 			},
-			Expected: `{"type":"bar","data":{"labels":["Hello world","Test"],"datasets":[{"label":"Foo","data":[1,2]}]}}`,
+			Expected: `{"type":"bar","data":{"labels":["Hello world","Test"],"datasets":[{"data":[1,2],"label":"Foo"}]}}`,
 		},
 		{
 			Chart: Chart{
@@ -34,14 +34,14 @@ func TestEncode(t *testing.T) {
 				Data: ChartData{
 					Labels: []Label{"Hello world", "Test"},
 					Datasets: []Dataset{
-						{
+						LineChartDataset{
 							Label: String("Foo"),
 							Data:  []Data{1, 2},
 						},
 					},
 				},
 			},
-			Expected: base64.StdEncoding.EncodeToString([]byte(`{"type":"bar","data":{"labels":["Hello world","Test"],"datasets":[{"label":"Foo","data":[1,2]}]}}`)),
+			Expected: base64.StdEncoding.EncodeToString([]byte(`{"type":"bar","data":{"labels":["Hello world","Test"],"datasets":[{"data":[1,2],"label":"Foo"}]}}`)),
 		},
 	}
 
@@ -73,14 +73,14 @@ func TestGetURL(t *testing.T) {
 				Data: ChartData{
 					Labels: []Label{"Hello world", "Test"},
 					Datasets: []Dataset{
-						{
+						LineChartDataset{
 							Label: String("Foo"),
 							Data:  []Data{1, 2},
 						},
 					},
 				},
 			},
-			Expected: "https://quickchart.io/chart?c=%7B%22type%22%3A%22bar%22%2C%22data%22%3A%7B%22labels%22%3A%5B%22Hello+world%22%2C%22Test%22%5D%2C%22datasets%22%3A%5B%7B%22label%22%3A%22Foo%22%2C%22data%22%3A%5B1%2C2%5D%7D%5D%7D%7D",
+			Expected: "https://quickchart.io/chart?c=%7B%22type%22%3A%22bar%22%2C%22data%22%3A%7B%22labels%22%3A%5B%22Hello+world%22%2C%22Test%22%5D%2C%22datasets%22%3A%5B%7B%22data%22%3A%5B1%2C2%5D%2C%22label%22%3A%22Foo%22%7D%5D%7D%7D",
 		},
 		{
 			Chart: Chart{
@@ -89,14 +89,14 @@ func TestGetURL(t *testing.T) {
 				Data: ChartData{
 					Labels: []Label{"Hello world", "Test"},
 					Datasets: []Dataset{
-						{
+						LineChartDataset{
 							Label: String("Foo"),
 							Data:  []Data{1, 2},
 						},
 					},
 				},
 			},
-			Expected: "https://quickchart.io/chart?c=eyJ0eXBlIjoiYmFyIiwiZGF0YSI6eyJsYWJlbHMiOlsiSGVsbG8gd29ybGQiLCJUZXN0Il0sImRhdGFzZXRzIjpbeyJsYWJlbCI6IkZvbyIsImRhdGEiOlsxLDJdfV19fQ%3D%3D&encoding=base64",
+			Expected: "https://quickchart.io/chart?c=eyJ0eXBlIjoiYmFyIiwiZGF0YSI6eyJsYWJlbHMiOlsiSGVsbG8gd29ybGQiLCJUZXN0Il0sImRhdGFzZXRzIjpbeyJkYXRhIjpbMSwyXSwibGFiZWwiOiJGb28ifV19fQ%3D%3D&encoding=base64",
 		},
 	}
 
