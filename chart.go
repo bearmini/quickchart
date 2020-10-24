@@ -4,7 +4,10 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"net/url"
+	"strings"
 )
 
 type Chart struct {
@@ -107,4 +110,36 @@ func (c *Chart) GetURL() (string, error) {
 	q.Add("c", encodedChart)
 
 	return fmt.Sprintf("https://quickchart.io/chart?%s", q.Encode()), nil
+}
+
+func GenerateShortURL(chart *Chart) (string, error) {
+	s, err := chart.Encode()
+	if err != nil {
+		return "", err
+	}
+
+	respObj, err := http.Post("https://quickchart.io/chart/create", "application/json", strings.NewReader(s))
+	if err != nil {
+		return "", err
+	}
+	defer func() {
+		respObj.Body.Close()
+	}()
+
+	respBody, err := ioutil.ReadAll(respObj.Body)
+	if err != nil {
+		return "", err
+	}
+
+	var resp struct {
+		Success string `json:"success"`
+		URL     string `json:"url"`
+	}
+
+	err = json.Unmarshal(respBody, &resp)
+	if err != nil {
+		return "", err
+	}
+
+	return resp.URL, nil
 }
