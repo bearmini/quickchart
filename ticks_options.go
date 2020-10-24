@@ -4,6 +4,10 @@ type TicksOptions struct {
 	AutoSkip        *bool    `json:"autoSkip,omitempty"`
 	AutoSkipPadding *float64 `json:"autoSkipPadding,omitempty"`
 	BeginAtZero     *bool    `json:"beginAtZero,omitempty"`
+	FontSize        *float64 `json:"fontSize,omitempty"`
+	FontFamily      *string  `json:"fontFamily,omitempty"`
+	FontColor       Color    `json:"fontColor,omitempty"`
+	FontStyle       *string  `json:"fontStyle,omitempty"`
 	LabelOffset     *float64 `json:"labelOffset,omitempty"`
 	Labels          []string `json:"labels,omitempty"`
 	Max             *float64 `json:"max,omitempty"`
