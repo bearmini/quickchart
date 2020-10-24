@@ -132,7 +132,7 @@ func GenerateShortURL(chart *Chart) (string, error) {
 	}
 
 	var resp struct {
-		Success string `json:"success"`
+		Success bool   `json:"success"`
 		URL     string `json:"url"`
 	}
 
