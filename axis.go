@@ -11,5 +11,6 @@ type Axis struct {
 	ScaleLabel *ScaleLabelOptions `json:"scaleLabel,omitempty"`
 	Stacked    *bool              `json:"stacked,omitempty"`
 	Ticks      *TicksOptions      `json:"ticks,omitempty"`
+	Time       *TimeOptions       `json:"time,omitempty"`
 	Type       *string            `json:"type,omitempty"`
 }

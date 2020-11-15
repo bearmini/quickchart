@@ -80,6 +80,47 @@ func (c *Chart) Encode() (string, error) {
 	return string(b), nil
 }
 
+type PostRequest struct {
+	BackgroundColor string  `json:"backgroundColor"`
+	Width           float64 `json:"width"`
+	Height          float64 `json:"height"`
+	Format          string  `json:"format"`
+	Chart           *Chart  `json:"chart"`
+}
+
+func (c *Chart) Download() ([]byte, error) {
+	req := PostRequest{
+		BackgroundColor: *c.backgroundColor,
+		Width:           *c.width,
+		Height:          *c.height,
+		Format:          *c.format,
+		Chart:           c,
+	}
+
+	body, err := json.Marshal(req)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := http.Post("https://quickchart.io/chart", "application/json", bytes.NewReader(body))
+	if err != nil {
+		return nil, err
+	}
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		resp.Body.Close()
+	}()
+
+	if resp.StatusCode >= http.StatusBadRequest {
+		return nil, fmt.Errorf("failed to download chart image: %s", string(respBody))
+	}
+
+	return respBody, nil
+}
+
 func (c *Chart) GetURL() (string, error) {
 	q := url.Values{}
 	if c.width != nil {
