@@ -14,7 +14,8 @@ func TestEncode(t *testing.T) {
 	}{
 		{
 			Chart: Chart{
-				Type: "bar",
+				apiEndpoint: "https://quickchart.io",
+				Type:        "bar",
 				Data: ChartData{
 					Labels: []Label{"Hello world", "Test"},
 					Datasets: []Dataset{
@@ -29,8 +30,9 @@ func TestEncode(t *testing.T) {
 		},
 		{
 			Chart: Chart{
-				encoding: String("base64"),
-				Type:     "bar",
+				apiEndpoint: "https://quickchart.io",
+				encoding:    String("base64"),
+				Type:        "bar",
 				Data: ChartData{
 					Labels: []Label{"Hello world", "Test"},
 					Datasets: []Dataset{
@@ -69,7 +71,8 @@ func TestGetURL(t *testing.T) {
 	}{
 		{
 			Chart: Chart{
-				Type: "bar",
+				apiEndpoint: "https://quickchart.io",
+				Type:        "bar",
 				Data: ChartData{
 					Labels: []Label{"Hello world", "Test"},
 					Datasets: []Dataset{
@@ -84,8 +87,9 @@ func TestGetURL(t *testing.T) {
 		},
 		{
 			Chart: Chart{
-				encoding: String("base64"),
-				Type:     "bar",
+				apiEndpoint: "https://quickchart.io",
+				encoding:    String("base64"),
+				Type:        "bar",
 				Data: ChartData{
 					Labels: []Label{"Hello world", "Test"},
 					Datasets: []Dataset{

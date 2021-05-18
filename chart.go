@@ -12,6 +12,7 @@ import (
 )
 
 type Chart struct {
+	apiEndpoint      string
 	width            *float64
 	height           *float64
 	devicePixelRatio *float64
@@ -24,12 +25,22 @@ type Chart struct {
 	Options          *ChartOptions `json:"options,omitempty"`
 }
 
+const (
+	defaultAPIEndpoint = "https://quickchart.io/"
+)
+
 func NewChart(t ChartType, d ChartData, o *ChartOptions) *Chart {
 	return &Chart{
-		Type:    t,
-		Data:    d,
-		Options: o,
+		apiEndpoint: defaultAPIEndpoint,
+		Type:        t,
+		Data:        d,
+		Options:     o,
 	}
+}
+
+func (c *Chart) APIEndpoint(e string) *Chart {
+	c.apiEndpoint = e
+	return c
 }
 
 func (c *Chart) Width(w float64) *Chart {
@@ -102,7 +113,7 @@ func (c *Chart) Download() ([]byte, error) {
 		return nil, err
 	}
 
-	resp, err := http.Post("https://quickchart.io/chart", "application/json", bytes.NewReader(body))
+	resp, err := http.Post(fmt.Sprintf("%s/chart", c.apiEndpoint), "application/json", bytes.NewReader(body))
 	if err != nil {
 		return nil, err
 	}
@@ -151,7 +162,7 @@ func (c *Chart) GetURL() (string, error) {
 	}
 	q.Add("c", encodedChart)
 
-	return fmt.Sprintf("https://quickchart.io/chart?%s", q.Encode()), nil
+	return fmt.Sprintf("%s/chart?%s", c.apiEndpoint, q.Encode()), nil
 }
 
 type GenerateShortURLRequest struct {
@@ -187,7 +198,7 @@ func GenerateShortURL(chart *Chart) (string, error) {
 		return "", err
 	}
 
-	respObj, err := http.Post("https://quickchart.io/chart/create", "application/json", bytes.NewReader(reqBody))
+	respObj, err := http.Post(fmt.Sprintf("%s/chart/create", chart.apiEndpoint), "application/json", bytes.NewReader(reqBody))
 	if err != nil {
 		return "", err
 	}
